@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'registroNegocio.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   @override
@@ -19,26 +22,25 @@ class _LoginPantalla extends State<Login> {
     });
   }
 
-  //diceño de la pagina de login
+  // Diseño de la página de login
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'inicio de secion o registro',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('inicio de secion o registro'),
-        ),
-        body: Center(
-            child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Inicio de sesión o registro'),
+      ),
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: TextField(
+                controller: _userCorreo,
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Usuario o correo electronico'),
+                  border: OutlineInputBorder(),
+                  labelText: 'Usuario o correo electrónico',
+                ),
               ),
             ),
             Padding(
@@ -46,22 +48,30 @@ class _LoginPantalla extends State<Login> {
               child: TextField(
                 controller: _contrasena,
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'Contraseña'),
+                  border: OutlineInputBorder(),
+                  labelText: 'Contraseña',
+                ),
                 obscureText: true,
               ),
             ),
             ElevatedButton(
               onPressed: _login,
-              child: const Text('Inicio de sesion'),
+              child: const Text('Inicio de sesión'),
             ),
             ElevatedButton(
-              onPressed: _login,
-              child: const Text('Registar Negocio'),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => RegistroPage(),
+                  ),
+                );
+              },
+              child: const Text('Registrar Negocio'),
             ),
             const SizedBox(height: 20),
             Text('Datos guardados: $password'),
           ],
-        )),
+        ),
       ),
     );
   }
@@ -69,6 +79,7 @@ class _LoginPantalla extends State<Login> {
   @override
   void dispose() {
     _contrasena.dispose(); // Asegúrate de liberar el controlador
+    _userCorreo.dispose();
     super.dispose();
   }
 }
